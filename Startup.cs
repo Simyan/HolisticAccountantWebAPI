@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using HolisticAccountant.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using HolisticAccountant.Interfaces;
+using HolisticAccountant.Repositories;
 
 namespace HolisticAccountant
 {
@@ -29,6 +31,8 @@ namespace HolisticAccountant
         {
             services.AddDbContext<HolisticAccountantContext>(opt => opt.UseSqlServer
                 (Configuration.GetConnectionString("HolisticAccountantConnection")));
+
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
 
             services.AddControllers();
         }

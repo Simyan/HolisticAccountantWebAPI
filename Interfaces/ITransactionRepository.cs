@@ -6,5 +6,7 @@ namespace HolisticAccountant.Interfaces
     public interface ITransactionRepository
     {
         IEnumerable<Transaction> GetTransactions(); 
+        double GetTotalExpenditure(); 
+        double GetAverageExpenditure(); 
     }    
 }
