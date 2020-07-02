@@ -36,5 +36,11 @@ namespace HolisticAccountant.Controllers
         {
             return _transactionRepository.GetAverageExpenditure();
         }
+
+        [HttpGet("AverageMonthlyExpenditure")]
+        public double GetAverageMonthlyExpenditure()
+        {
+            return _transactionRepository.GetAverageMonthlyExpenditure();
+        }
     }
 }

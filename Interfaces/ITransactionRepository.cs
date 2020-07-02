@@ -7,6 +7,7 @@ namespace HolisticAccountant.Interfaces
     {
         IEnumerable<Transaction> GetTransactions(); 
         double GetTotalExpenditure(); 
-        double GetAverageExpenditure(); 
+        double GetAverageExpenditure();
+        double GetAverageMonthlyExpenditure();
     }    
 }
