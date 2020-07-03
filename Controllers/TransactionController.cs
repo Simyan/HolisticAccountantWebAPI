@@ -47,8 +47,17 @@ namespace HolisticAccountant.Controllers
         [HttpGet("MonthlyDailyExpenditure")]
         public IEnumerable<DailyExpenseChartDTO> GetMonthlyDailyExpenditure(DateTime? selectedMonth)
         {
-            selectedMonth = new DateTime(2019, 7, 1);
+            //for Testing
+            //selectedMonth = new DateTime(2019, 7, 1);
             return _transactionRepository.GetMonthlyDailyExpenditure(selectedMonth);
+        }
+
+        [HttpGet("MonthlyCategoryExpenditure")]
+        public IEnumerable<CategoryExpenseDTO> GetMonthlyCategoryExpenditure(DateTime? selectedMonth)
+        {
+            //for Testing
+            //selectedMonth = new DateTime(2020, 5, 1);
+            return _transactionRepository.GetMonthlyCategoryExpenditure(selectedMonth);
         }
     }
 }

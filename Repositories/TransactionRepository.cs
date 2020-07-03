@@ -50,8 +50,8 @@ namespace HolisticAccountant.Repositories
         //Feature 2.1
         public IEnumerable<DailyExpenseChartDTO> GetMonthlyDailyExpenditure(DateTime? selectedMonth)
         {
-            //For Testing
-            //selectedMonth = selectedMonth.HasValue ? selectedMonth : DateTime.Now; 
+            
+            selectedMonth = selectedMonth.HasValue ? selectedMonth : DateTime.Now; 
 
             var result = from row in _context.Transactions
                          group row by new { month = row.PurchasedOn.Month, year = row.PurchasedOn.Year, day = row.PurchasedOn, amount = row.Amount } into monthly
@@ -59,6 +59,21 @@ namespace HolisticAccountant.Repositories
 
             return result.Where(x => x.Month == selectedMonth.Value.Month && x.Day.Year == selectedMonth.Value.Year);
         }
+
+        //Feature 3.1
+        public IEnumerable<CategoryExpenseDTO> GetMonthlyCategoryExpenditure(DateTime? selectedMonth)
+        {
+            selectedMonth = selectedMonth.HasValue ? selectedMonth : DateTime.Now;
+
+            var result = from row in _context.Transactions
+                         group row by new { month = row.PurchasedOn.Month, year = row.PurchasedOn.Year, category = row.Type } into monthly
+                         select new CategoryExpenseDTO  { 
+                             Month = monthly.Key.month, Year = monthly.Key.year, Category = monthly.Key.category, 
+                             CategoryMonthlyAmount = monthly.Sum(y => y.Amount) };
+
+            return result.Where(x => x.Month == selectedMonth.Value.Month && x.Year == selectedMonth.Value.Year);
+        }
+
 
 
         //Feature 4

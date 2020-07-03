@@ -13,5 +13,6 @@ namespace HolisticAccountant.Interfaces
         double GetAverageMonthlyExpenditure();
 
         IEnumerable<DailyExpenseChartDTO> GetMonthlyDailyExpenditure(DateTime? selectedMonth);
+        IEnumerable<CategoryExpenseDTO> GetMonthlyCategoryExpenditure(DateTime? selectedMonth);
     }    
 }
