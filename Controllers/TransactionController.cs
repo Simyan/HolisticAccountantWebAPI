@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using HolisticAccountant.Interfaces;
 using HolisticAccountant.Models.Entities;
+using HolisticAccountant.Models.DTO;
 
 namespace HolisticAccountant.Controllers
 {
@@ -25,10 +26,10 @@ namespace HolisticAccountant.Controllers
             return _transactionRepository.GetTransactions();
         }
 
-        [HttpGet("TotalExpenditure")]
+        [HttpGet("CurrentDayTotalExpenditure")]
         public double GetTotalExpenditure()
         {
-            return _transactionRepository.GetTotalExpenditure();
+            return _transactionRepository.GetCurrentDayTotalExpenditure();
         }
 
         [HttpGet("AverageExpenditure")]
@@ -41,6 +42,13 @@ namespace HolisticAccountant.Controllers
         public double GetAverageMonthlyExpenditure()
         {
             return _transactionRepository.GetAverageMonthlyExpenditure();
+        }
+
+        [HttpGet("MonthlyDailyExpenditure")]
+        public IEnumerable<DailyExpenseChartDTO> GetMonthlyDailyExpenditure(DateTime? selectedMonth)
+        {
+            selectedMonth = new DateTime(2019, 7, 1);
+            return _transactionRepository.GetMonthlyDailyExpenditure(selectedMonth);
         }
     }
 }

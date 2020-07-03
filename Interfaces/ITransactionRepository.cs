@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using HolisticAccountant.Models.DTO;
 using HolisticAccountant.Models.Entities;
 
 namespace HolisticAccountant.Interfaces
@@ -6,8 +8,10 @@ namespace HolisticAccountant.Interfaces
     public interface ITransactionRepository
     {
         IEnumerable<Transaction> GetTransactions(); 
-        double GetTotalExpenditure(); 
+        double GetCurrentDayTotalExpenditure(); 
         double GetAverageExpenditure();
         double GetAverageMonthlyExpenditure();
+
+        IEnumerable<DailyExpenseChartDTO> GetMonthlyDailyExpenditure(DateTime? selectedMonth);
     }    
 }
