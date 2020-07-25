@@ -9,6 +9,9 @@ namespace HolisticAccountant.Models.DTO
     {
         public int Month { get; set; }
         public DateTime Day { get; set; }
-        public double Amount { get; set; } 
+        public double Amount { get; set; }
+        public string MonthText { get; set; }
+        public string DayText { get; set; }
+        
     }
 }

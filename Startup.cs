@@ -29,6 +29,11 @@ namespace HolisticAccountant
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
+            {
+                builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+            }));
+            //services.AddCors();
             services.AddDbContext<HolisticAccountantContext>(opt => opt.UseSqlServer
                 (Configuration.GetConnectionString("HolisticAccountantConnection")));
 
@@ -44,6 +49,11 @@ namespace HolisticAccountant
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("ApiCorsPolicy");
+            //app.UseCors(builder => builder
+            //.AllowAnyOrigin()
+            //.AllowAnyMethod()
+            //.AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

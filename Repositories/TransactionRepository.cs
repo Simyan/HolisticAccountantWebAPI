@@ -54,10 +54,17 @@ namespace HolisticAccountant.Repositories
             selectedMonth = selectedMonth.HasValue ? selectedMonth : DateTime.Now; 
 
             var result = from row in _context.Transactions
-                         group row by new { month = row.PurchasedOn.Month, year = row.PurchasedOn.Year, day = row.PurchasedOn, amount = row.Amount } into monthly
-                         select new DailyExpenseChartDTO { Month = monthly.Key.month, Day = monthly.Key.day, Amount = monthly.Key.amount};
+                         group row by new { year = row.PurchasedOn.Year, month = row.PurchasedOn.Month, day = row.PurchasedOn.Day }  into monthly
+                         select new DailyExpenseChartDTO { Month = monthly.Key.month, Day = new DateTime(monthly.Key.year, monthly.Key.month, monthly.Key.day), Amount = monthly.Sum( y => y.Amount)};
 
-            return result.Where(x => x.Month == selectedMonth.Value.Month && x.Day.Year == selectedMonth.Value.Year);
+            return result.ToList().Where(x => x.Month == selectedMonth.Value.Month && x.Day.Year == selectedMonth.Value.Year)
+                .Select(x => new DailyExpenseChartDTO
+                {
+                    Amount = x.Amount,
+                    DayText = x.Day.Day.ToString(),
+                    MonthText = x.Month.ToString()
+                });
+            //return finalResult;
         }
 
         //Feature 3.1
