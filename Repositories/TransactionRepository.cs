@@ -28,23 +28,24 @@ namespace HolisticAccountant.Repositories
                          group row by new { month = row.PurchasedOn.Month, year = row.PurchasedOn.Year } into monthly
                          select new { month = monthly.Key.month, year = monthly.Key.year, monthlySum = monthly.Sum(y => y.Amount) };
 
-            return result.Where(x => !(x.month == DateTime.Now.Month && x.year == DateTime.Now.Year)).Average(avg => avg.monthlySum);
+            var amount = result.Where(x => !(x.month == DateTime.Now.Month && x.year == DateTime.Now.Year)).Average(avg => avg.monthlySum);
+            return Math.Round(amount, 2, MidpointRounding.AwayFromZero);
         }
 
         //Feature 1.2
         public double GetAverageExpenditure()
         {
             //var total = _context.Transactions.Where(x => x.PurchasedOn > DateTime.Now).Sum(x => x.Amount);
-            var total = _context.Transactions.Where(x => x.PurchasedOn < DateTime.Now).Average(x => x.Amount);
-            return total;
+            var amount = _context.Transactions.Where(x => x.PurchasedOn < DateTime.Now).Average(x => x.Amount);
+            return Math.Round(amount, 2, MidpointRounding.AwayFromZero);
         }
         
         //Feature 1.3
         public double GetCurrentDayTotalExpenditure()
         {
             //var total = _context.Transactions.Where(x => x.PurchasedOn > DateTime.Now).Sum(x => x.Amount);
-            var total = _context.Transactions.Where(x => x.PurchasedOn == DateTime.Now).Sum(x => x.Amount);
-            return total;
+            var amount = _context.Transactions.Where(x => x.PurchasedOn == DateTime.Now).Sum(x => x.Amount);
+            return Math.Round(amount, 2, MidpointRounding.AwayFromZero);
         }
 
         //Feature 2.1

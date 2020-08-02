@@ -31,7 +31,8 @@ namespace HolisticAccountant
         {
             services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {
-                builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+               // builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                builder.WithOrigins("https://holistic-accountant.herokuapp.com").AllowAnyMethod().AllowAnyHeader();
             }));
             //services.AddCors();
             services.AddDbContext<HolisticAccountantContext>(opt => opt.UseSqlServer
