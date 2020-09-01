@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using HolisticAccountant.Interfaces;
 using HolisticAccountant.Models.Entities;
 using HolisticAccountant.Models.DTO;
+using Serilog;
 
 namespace HolisticAccountant.Controllers
 {
@@ -59,5 +60,13 @@ namespace HolisticAccountant.Controllers
             //selectedMonth = new DateTime(2020, 5, 1);
             return _transactionRepository.GetMonthlyCategoryExpenditure(selectedMonth);
         }
+
+        [HttpPost("PostSMSList")]
+        public void PostSMSList(SMSListDTO request)
+        {
+            var x = request;
+            Log.Information("SMS list recieved from Android Service. {@x}", x);
+        }
+
     }
 }

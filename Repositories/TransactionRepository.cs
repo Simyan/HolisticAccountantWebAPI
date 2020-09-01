@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HolisticAccountant.Interfaces;
 using HolisticAccountant.Models.DTO;
+using Serilog;
 
 namespace HolisticAccountant.Repositories
 {
@@ -29,6 +30,7 @@ namespace HolisticAccountant.Repositories
                          select new { month = monthly.Key.month, year = monthly.Key.year, monthlySum = monthly.Sum(y => y.Amount) };
 
             var amount = result.Where(x => !(x.month == DateTime.Now.Month && x.year == DateTime.Now.Year)).Average(avg => avg.monthlySum);
+            
             return Math.Round(amount, 2, MidpointRounding.AwayFromZero);
         }
 
@@ -58,14 +60,15 @@ namespace HolisticAccountant.Repositories
                          group row by new { year = row.PurchasedOn.Year, month = row.PurchasedOn.Month, day = row.PurchasedOn.Day }  into monthly
                          select new DailyExpenseChartDTO { Month = monthly.Key.month, Day = new DateTime(monthly.Key.year, monthly.Key.month, monthly.Key.day), Amount = monthly.Sum( y => y.Amount)};
 
-            return result.ToList().Where(x => x.Month == selectedMonth.Value.Month && x.Day.Year == selectedMonth.Value.Year)
+            var finalResult = result.ToList().Where(x => x.Month == selectedMonth.Value.Month && x.Day.Year == selectedMonth.Value.Year)
                 .Select(x => new DailyExpenseChartDTO
                 {
                     Amount = x.Amount,
                     DayText = x.Day.Day.ToString(),
                     MonthText = x.Month.ToString()
                 });
-            //return finalResult;
+            Log.Information("{@finalResult}", finalResult);
+            return finalResult;
         }
 
         //Feature 3.1
