@@ -8,6 +8,7 @@ using HolisticAccountant.Interfaces;
 using HolisticAccountant.Models.Entities;
 using HolisticAccountant.Models.DTO;
 using Serilog;
+using AutoMapper;
 
 namespace HolisticAccountant.Controllers
 {
@@ -16,9 +17,13 @@ namespace HolisticAccountant.Controllers
     public class TransactionController : ControllerBase
     {
         private ITransactionRepository _transactionRepository;
-        public TransactionController(ITransactionRepository transactionRepository)
+        private ISMSRepository _smsRepository;
+        private readonly IMapper _mapper;
+        public TransactionController(ITransactionRepository transactionRepository, ISMSRepository smsRepository, IMapper mapper)
         {
             _transactionRepository = transactionRepository;
+            _smsRepository = smsRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -64,9 +69,9 @@ namespace HolisticAccountant.Controllers
         [HttpPost("PostSMSList")]
         public void PostSMSList(SMSListDTO request)
         {
-            var x = request;
-            Log.Information("SMS list recieved from Android Service. {@x}", x);
+            Log.Information("SMS list recieved from Android Service. {@x}", request);
+            var transactionsDTO = _smsRepository.PostSMSList(request);
+            _transactionRepository.SaveTransactions(_mapper.Map<List<Transaction>>(transactionsDTO));
         }
-
     }
 }

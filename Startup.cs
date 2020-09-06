@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using HolisticAccountant.Interfaces;
 using HolisticAccountant.Repositories;
 using Serilog;
+using AutoMapper;
 
 namespace HolisticAccountant
 {
@@ -40,8 +41,10 @@ namespace HolisticAccountant
                 (Configuration.GetConnectionString("HolisticAccountantConnection")));
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<ISMSRepository, SMSRepository>();
 
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

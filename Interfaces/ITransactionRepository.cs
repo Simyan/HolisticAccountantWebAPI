@@ -14,5 +14,7 @@ namespace HolisticAccountant.Interfaces
 
         IEnumerable<DailyExpenseChartDTO> GetMonthlyDailyExpenditure(DateTime? selectedMonth);
         IEnumerable<CategoryExpenseDTO> GetMonthlyCategoryExpenditure(DateTime? selectedMonth);
+
+        void SaveTransactions(List<Transaction> transactions);
     }    
 }

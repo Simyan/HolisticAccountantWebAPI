@@ -37,9 +37,14 @@ namespace HolisticAccountant.Repositories
         //Feature 1.2
         public double GetAverageExpenditure()
         {
+            //BUG - Average is being calculated based on total number of entries, it should instead be based on total number of days elapsed between first and last transaction.
             //var total = _context.Transactions.Where(x => x.PurchasedOn > DateTime.Now).Sum(x => x.Amount);
-            var amount = _context.Transactions.Where(x => x.PurchasedOn < DateTime.Now).Average(x => x.Amount);
-            return Math.Round(amount, 2, MidpointRounding.AwayFromZero);
+            var first = _context.Transactions.OrderBy(x => x.PurchasedOn).First().PurchasedOn;
+            var last = _context.Transactions.OrderBy(x => x.PurchasedOn).Last().PurchasedOn;
+            var diff = (last - first).Days;
+            var amountSum = _context.Transactions.Where(x => x.PurchasedOn < DateTime.Now).Sum(x => x.Amount);
+            var amountAverage = amountSum / diff;
+            return Math.Round(amountAverage, 2, MidpointRounding.AwayFromZero);
         }
         
         //Feature 1.3
@@ -92,6 +97,11 @@ namespace HolisticAccountant.Repositories
         {
             return _context.Transactions.ToList();
         }
-       
+
+        public void SaveTransactions(List<Transaction> transactions)
+        {
+           _context.AddRange(transactions);
+           var result = _context.SaveChanges();
+        }
     }
 }
